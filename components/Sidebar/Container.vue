@@ -1,5 +1,5 @@
 <template>
-	<nav class="h-[var(--main-con-height)] top-[var(--nav-height)] sticky max-md:fixed max-md:z-10 max-md:w-full max-md:bg-black max-md:bg-opacity-20" :class="!showSidebar ? 'max-md:hidden' : ''" @click="clicked" ref="nav">
+	<nav class="h-[var(--main-con-height)] top-[var(--nav-height)] sticky max-[800px]:fixed max-[800px]:z-10 max-[800px]:w-full max-[800px]:bg-black max-[800px]:bg-opacity-20" :class="!showSidebar ? 'max-[800px]:hidden' : ''" @click="clicked" ref="nav">
 		<slot />
 	</nav>
 </template>

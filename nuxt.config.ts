@@ -2,10 +2,9 @@ import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 
 export default defineNuxtConfig({
-	devtools: { enabled: true },
+	devtools: { enabled: false },
 	telemetry: false,
 	css: ['~/assets/css/global.css'],
-	modules: ['@nuxtjs/tailwindcss'],
 	router: { options: { sensitive: true } },
 	vite: { build: { assetsInlineLimit: 0 } },
 
@@ -29,6 +28,12 @@ export default defineNuxtConfig({
 				{ property: 'og:type', content: 'website' }
 			],
 			link: [{ rel: 'icon', href: '/favicon.ico' }]
+		}
+	},
+
+	postcss: {
+		plugins: {
+			tailwindcss: {}
 		}
 	},
 

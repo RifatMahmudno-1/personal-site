@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
 	--nav-height: 3rem;
 	--main-con-height: calc(100dvh - var(--nav-height));
