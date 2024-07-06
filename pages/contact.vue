@@ -1,7 +1,7 @@
 <template>
 	<div class="flex-grow grid justify-items-center items-center">
 		<form class="w-full max-w-[40rem] bg-cyan-300 shadow-md rounded p-4 flex flex-col gap-4" @submit.prevent="submit">
-			<h1 class="self-center px-2 border-b-2 border-cyan-500 font-semibold text-xl">Contect</h1>
+			<h1 class="self-center px-2 border-b-2 border-cyan-500 font-semibold text-xl">Contact</h1>
 			<div class="grid items-center gap-2 grid-cols-[auto_1fr]">
 				<label for="name">Name:</label>
 				<input type="text" name="name" id="name" required placeholder="Enter your name" minlength="3" maxlength="64" class="bg-white w-full rounded px-1 focus:shadow-md transition-shadow" v-model="body.name" :disabled="sending" />
