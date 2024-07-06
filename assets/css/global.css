@@ -1,0 +1,18 @@
+:root {
+	--nav-height: 3rem;
+	--main-con-height: calc(100dvh - var(--nav-height));
+}
+
+svg {
+	@apply inline-block align-middle;
+}
+
+input,
+button,
+textarea {
+	@apply outline-none disabled:opacity-70;
+}
+
+.loading {
+	@apply animate-pulse;
+}
