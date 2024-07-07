@@ -36,6 +36,7 @@
 
 	const sending = ref(false)
 	async function submit() {
+		sending.value = true
 		try {
 			const got = await $fetch('/api/post', {
 				method: 'POST',
@@ -53,5 +54,6 @@
 		} catch (e: any) {
 			showError(e)
 		}
+		sending.value = false
 	}
 </script>
