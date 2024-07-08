@@ -8,7 +8,7 @@ declare module 'h3' {
 
 const errored = (res: ReturnType<typeof modifyH3>['res']) => res.deleteCookie('TokenS').deleteCookie('TokenP').deleteCookie('Stay').sendStatus(401)
 
-const guardedRoutes = ['/api/post', '/api/contacted']
+const guardedRoutes = ['/api/post', '/api/contacted', '/api/imgur']
 const guardedRoutesExactExceptions = [
 	{ pathname: '/api/post', method: 'GET' },
 	{ pathname: '/api/post/like', method: 'POST' }
