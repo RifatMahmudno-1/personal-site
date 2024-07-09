@@ -32,7 +32,7 @@ type req = {
 	getIP(): string | undefined
 	getCookie: (name: Parameters<typeof getCookie>[1]) => ReturnType<typeof getCookie>
 	parseBody(): Promise<any>
-	parseForm(): Promise<ParsedForm>
+	parseForm(): Promise<any> //Promise<ParsedForm>
 }
 
 type res = {
