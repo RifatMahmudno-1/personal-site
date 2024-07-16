@@ -187,7 +187,7 @@ export default defineEventHandler(async ev => {
 
 		const secrets = await getSecrets()
 		if (!secrets) return res.send({ status: 'imgur_secrets_error' })
-		if (secrets.valid_till && secrets.valid_till < Date.now()) {
+		if (!secrets.valid_till || secrets.valid_till < Date.now()) {
 			const refreshed = await refreshToken(secrets)
 			if (!refreshed) return res.send({ status: 'imgur_refresh_error' })
 			Object.assign(secrets, refreshed)
