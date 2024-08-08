@@ -3,7 +3,7 @@
 		<NavigationToggleBtn />
 		<div class="flex gap-2 items-center">
 			<NuxtLink href="/" class="bg-cyan-200 px-2 py-0.5 rounded shadow-sm transition-shadow flex items-center gap-1"><IconHome /> Home</NuxtLink>
-			<!-- <NuxtLink href="/about" class="bg-cyan-200 px-2 py-0.5 rounded shadow-sm transition-shadow flex items-center gap-1"><IconAbout /> About</NuxtLink> -->
+			<NuxtLink href="/about" class="bg-cyan-200 px-2 py-0.5 rounded shadow-sm transition-shadow flex items-center gap-1"><IconAbout /> About</NuxtLink>
 
 			<NuxtLink href="/contact" class="bg-cyan-200 px-2 py-0.5 rounded shadow-sm transition-shadow flex items-center gap-1" v-if="!$route.meta.admin"><IconContact /> Contact</NuxtLink>
 			<NuxtLink href="/contacted" class="bg-cyan-200 px-2 py-0.5 rounded shadow-sm transition-shadow flex items-center gap-1" v-else><IconContact /> Contacted</NuxtLink>
