@@ -8,13 +8,19 @@ type cAsyncDataOptions = {
 	lazy?: boolean
 	immediate?: boolean
 	maxAge?: number
-	watch?: Ref<unknown>[]
+	watch?: MaybeRefOrGetter<unknown>[]
 	default?: Function
 	getFromCache?: boolean
 }
 
-export async function cFetch<DataT>(url: Parameters<typeof $fetch>[0], options: Parameters<typeof $fetch>[1] & cAsyncDataOptions = {}) {
+export async function cFetch<DataT>(url: MaybeRefOrGetter<Parameters<typeof $fetch>[0]>, options: Parameters<typeof $fetch>[1] & cAsyncDataOptions = {}) {
+	if (typeof toValue(url) !== 'string') throw new Error('[url] must be string or ref or getter')
+
 	const fetch = import.meta.server ? useRequestFetch() : $fetch
+	if ('watch' in options) {
+		if (Array.isArray(options.watch)) options.watch.push(url)
+		else options.watch = [url]
+	} else options.watch = [url]
 
 	const onlyAsync: string[] = ['key', 'getCachedData', 'transform', 'server', 'lazy', 'immediate', 'maxAge', 'watch', 'default', 'getFromCache']
 	const asyncOptions: cAsyncDataOptions = {}
@@ -46,12 +52,12 @@ export async function cFetch<DataT>(url: Parameters<typeof $fetch>[0], options: 
 
 	function asyncFetcher() {
 		const opts = getFetchOptions()
-		return fetch(url, opts)
+		return fetch(toValue(url), opts)
 	}
 
 	asyncFetcher.keyArr = () => {
 		const opts = getFetchOptions()
-		return [url, opts.query, opts.method || 'GET']
+		return [toValue(url), opts.query, opts.method || 'GET']
 	}
 
 	return cAsyncData<DataT>(asyncFetcher, asyncOptions)
@@ -92,7 +98,7 @@ export async function cAsyncData<DataT>(handler: Function, options: cAsyncDataOp
 	if (options.getFromCache === true) options.maxAge = Infinity
 	if (options.watch) {
 		options.watch.forEach(el => {
-			if (!isRef(el)) throw Error('Elements of [options.watch] must be reactive value.')
+			if (!isRef(el) && typeof el !== 'function') throw Error('Elements of [options.watch] must be reactive value.')
 		})
 		watch([...options.watch], () => mainHandler(handler, options, keyArr, data, pending, error))
 	}
@@ -178,7 +184,7 @@ async function mainHandler(handler: Function, options: cAsyncDataOptions, keyArr
 	}
 }
 
-export async function cLazyFetch<DataT>(url: Parameters<typeof $fetch>[0], options: Parameters<typeof $fetch>[1] & Omit<cAsyncDataOptions, 'lazy'> = {}) {
+export async function cLazyFetch<DataT>(url: MaybeRefOrGetter<Parameters<typeof $fetch>[0]>, options: Parameters<typeof $fetch>[1] & Omit<cAsyncDataOptions, 'lazy'> = {}) {
 	if ('lazy' in options) delete options.lazy
 	//@ts-ignore
 	options.lazy = true
@@ -232,12 +238,12 @@ function isSameKey(key: string, objKey: string | Ref<string> | undefined, data: 
 
 function saveTimeHistory(key: string, payload: any) {
 	if (import.meta.server) return
-	if (!payload.dataTimeHistory) payload.dataTimeHistory = {}
-	payload.dataTimeHistory[key] = Date.now()
+	if (!payload._dataTimeHistory_) payload._dataTimeHistory_ = {}
+	payload._dataTimeHistory_[key] = Date.now()
 }
 
 function getTimeHistory(key: string, payload: any) {
 	if (import.meta.server) return
-	if (!payload.dataTimeHistory) payload.dataTimeHistory = {}
-	return payload.dataTimeHistory[key]
+	if (!payload._dataTimeHistory_) payload._dataTimeHistory_ = {}
+	return payload._dataTimeHistory_[key]
 }
