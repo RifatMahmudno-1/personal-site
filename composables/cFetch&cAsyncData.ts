@@ -2,14 +2,14 @@ import { hash } from 'ohash'
 
 type cAsyncDataOptions = {
 	key?: string | Ref<string>
-	getCachedData?: Function
-	transform?: Function
+	getCachedData?: (key: string) => Promise<any>
+	transform?: (data: any) => any
 	server?: boolean
 	lazy?: boolean
 	immediate?: boolean
 	maxAge?: number
 	watch?: MaybeRefOrGetter<unknown>[]
-	default?: Function
+	default?: () => any
 	getFromCache?: boolean
 }
 
