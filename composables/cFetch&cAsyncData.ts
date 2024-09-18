@@ -17,10 +17,12 @@ export async function cFetch<DataT>(url: MaybeRefOrGetter<Parameters<typeof $fet
 	if (typeof toValue(url) !== 'string') throw new Error('[url] must be string or ref or getter')
 
 	const fetch = import.meta.server ? useRequestFetch() : $fetch
-	if ('watch' in options) {
-		if (Array.isArray(options.watch)) options.watch.push(url)
-		else options.watch = [url]
-	} else options.watch = [url]
+	if (isRef(url) || typeof url === 'function') {
+		if ('watch' in options) {
+			if (Array.isArray(options.watch)) options.watch.push(url)
+			else options.watch = [url]
+		} else options.watch = [url]
+	}
 
 	const onlyAsync: string[] = ['key', 'getCachedData', 'transform', 'server', 'lazy', 'immediate', 'maxAge', 'watch', 'default', 'getFromCache']
 	const asyncOptions: cAsyncDataOptions = {}
