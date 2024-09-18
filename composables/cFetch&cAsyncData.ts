@@ -20,7 +20,7 @@ export async function cFetch<DataT>(url: MaybeRefOrGetter<Parameters<typeof $fet
 	if (isRef(url) || typeof url === 'function') {
 		if ('watch' in options) {
 			if (Array.isArray(options.watch)) options.watch.push(url)
-			else options.watch = [url]
+			else throw Error('[options.watch] must be Array')
 		} else options.watch = [url]
 	}
 
