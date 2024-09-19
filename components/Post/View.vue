@@ -1,7 +1,7 @@
 <template>
 	<div class="bg-cyan-200 p-2 rounded grid gap-2">
 		<div class="grid gap-0.5">
-			<h2 class="font-semibold text-lg">{{ props.postData.title }}</h2>
+			<h2 class="font-semibold text-xl">{{ props.postData.title }}</h2>
 			<div class="flex gap-2 text-sm">
 				<p class="bg-white bg-opacity-70 px-1 rounded"><span class="text-cyan-500 font-semibold">@</span> {{ props.postData.section }}</p>
 				<p class="bg-white bg-opacity-70 px-1 rounded">{{ parseDate(props.postData.createdAt) }}</p>

@@ -30,7 +30,13 @@ export default defineEventHandler(async ev => {
 				}
 			])
 			.toArray()
-		return res.send(got)
+
+		return res.send(
+			got.map(el => {
+				el.posts = el.posts.toSorted((a: any, b: any) => a.title.localeCompare(b.title))
+				return el
+			})
+		)
 	} catch (e) {
 		console.log(e)
 		return res.sendStatus(500)
