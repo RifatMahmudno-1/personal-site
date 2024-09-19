@@ -2,6 +2,7 @@ type BodyType = {
 	name: string
 	email: string
 	message: string
+	token: string
 }
 
 const schema: AJVSchema<BodyType> = {
@@ -9,9 +10,10 @@ const schema: AJVSchema<BodyType> = {
 	properties: {
 		name: { type: 'string', minLength: 3, maxLength: 64 },
 		email: { type: 'string', minLength: 8, maxLength: 256 },
-		message: { type: 'string', minLength: 1, maxLength: 5000 }
+		message: { type: 'string', minLength: 1, maxLength: 5000 },
+		token: { type: 'string', minLength: 20, maxLength: 2048 }
 	},
-	required: ['email', 'name', 'message'],
+	required: ['email', 'name', 'message', 'token'],
 	additionalProperties: false
 }
 
@@ -21,6 +23,8 @@ export default defineEventHandler(async ev => {
 		const body: BodyType = await req.parseBody()
 		const validation = ajvValidate(schema, body)
 		if (validation.error) return res.setStatus(400).send(validation)
+
+		if (!(await validateTurnstile(process.env.TurnstileSecretKey!, body.token, req.getIP()))) return res.sendStatus(400)
 
 		await mongo.client!.db('Personal_Site').collection('Messages').insertOne({
 			name: body.name,

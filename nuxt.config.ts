@@ -27,7 +27,8 @@ export default defineNuxtConfig({
 				{ name: 'creator', content: 'Rifat Mahmud' },
 				{ property: 'og:type', content: 'website' }
 			],
-			link: [{ rel: 'icon', href: '/favicon.ico' }]
+			link: [{ rel: 'icon', href: '/favicon.ico' }],
+			script: [{ src: 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit' }]
 		}
 	},
 
