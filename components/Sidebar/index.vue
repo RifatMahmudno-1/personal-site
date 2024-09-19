@@ -35,6 +35,7 @@
 
 <script setup lang="ts">
 	const refreshSidebar = inject<Ref<boolean>>('refreshSidebar')
+	const datalistSections = inject<Ref<string[]>>('datalistSections')
 	const route = useRoute()
 
 	const { data, pending, error, refresh } = await cLazyFetch<EachSectionType[]>('/api/posts/sections', { responseType: 'json' })
@@ -50,28 +51,34 @@
 		else showing.value.push(section)
 	}
 
-	watch(refreshSidebar!, () => {
-		if (!pending.value && refreshSidebar?.value) {
-			refresh()
-			refreshSidebar.value = false
-		}
-	})
+	if (refreshSidebar) {
+		watch(refreshSidebar, () => {
+			if (!pending.value && refreshSidebar?.value) {
+				refresh()
+				refreshSidebar.value = false
+			}
+		})
+	}
 
 	watch(
 		pending,
 		() => {
 			if (!pending.value) {
 				const newArr: string[] = []
+				// add current section
 				if (route.params.section) newArr.push(route.params.section as string)
-
+				// add other existing expanded sections
 				showing.value.forEach(el => {
 					if (data.value?.find(e => e.section === el)) {
 						if (route.params?.section === el) return
 						newArr.push(el)
 					}
 				})
-
+				// add it to showing
 				showing.value = newArr
+
+				// add sections datalistSections
+				if (datalistSections?.value) datalistSections.value = data.value?.map(el => el.section) || []
 			}
 		},
 		{

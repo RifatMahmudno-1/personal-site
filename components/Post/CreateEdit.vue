@@ -8,7 +8,10 @@
 					<label for="title">Title:</label>
 					<input type="text" id="title" placeholder="Enter post title" class="rounded px-1 bg-white" required v-model="postData.title" :disabled="sending" />
 					<label for="section">Section:</label>
-					<input type="text" id="section" placeholder="Enter post section" class="rounded px-1 bg-white" required v-model="postData.section" :disabled="sending" />
+					<input type="text" id="section" placeholder="Enter post section" class="rounded px-1 bg-white" required v-model="postData.section" :disabled="sending" list="list_section" />
+					<datalist v-if="datalistSections" id="list_section">
+						<option :value="d" v-for="d in datalistSections">{{ d }}</option>
+					</datalist>
 					<label for="post" class="col-[1/-1]">Content:</label>
 					<textarea id="post" class="min-h-[10rem] rounded p-1 resize-y col-[1/-1] bg-white" placeholder="Post content here" required v-model="postData.content" :disabled="sending"></textarea>
 				</div>
@@ -26,6 +29,7 @@
 <script setup lang="ts">
 	const emit = defineEmits<{ 'toggle-create-edit': []; 'update-data': [EachPostType] }>()
 	const props = defineProps<{ type: 'create' | 'edit'; postData?: EachPostType }>()
+	const datalistSections = inject<Ref<string[]>>('datalistSections')
 
 	const previewing = ref(false)
 	const uploading_image = ref(false)

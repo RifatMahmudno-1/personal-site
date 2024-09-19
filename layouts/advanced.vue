@@ -12,4 +12,5 @@
 	const { setShowToggleBtn } = useShowToggleBtn()
 	setShowToggleBtn(true)
 	provide('refreshSidebar', ref(false))
+	provide('datalistSections', ref<string[]>([]))
 </script>
