@@ -11,16 +11,17 @@
 		<MarkdownRederer :md="props.postData.content" class="bg-white p-1 px-2 rounded overflow-auto" :class="!props.onlyOne ? 'max-h-[15rem]' : ''" />
 		<div class="flex justify-evenly">
 			<PostLike :disabled="busy" :likes="props.postData.likes" :_id="props.postData._id" @liking="v => (liking = v)" />
-			<button class="flex items-center gap-1 bg-cyan-300 rounded px-2 py-1" @click="() => (editing = true)" :disabled="busy" v-if="route.meta.admin">Edit</button>
-			<button class="flex items-center gap-1 bg-red-500 rounded px-2 py-1" @click="deletePost" :disabled="busy" v-if="route.meta.admin">Delete</button>
-			<button class="flex items-center gap-1 bg-cyan-300 rounded px-2 py-1" :disabled="busy" @click="copyLink">Share <IconShare /></button>
+			<button v-if="!noView" class="flex items-center gap-1 bg-cyan-300 rounded px-2 py-1" @click="() => $router.push(`/posts/${props.postData.section}/${props.postData._id}`)" :disabled="busy"><IconEye /> View</button>
+			<button class="flex items-center gap-1 bg-cyan-300 rounded px-2 py-1" @click="() => (editing = true)" :disabled="busy" v-if="route.meta.admin"><IconEdit /> Edit</button>
+			<button class="flex items-center gap-1 bg-red-500 rounded px-2 py-1" @click="deletePost" :disabled="busy" v-if="route.meta.admin"><IconDelete /> Delete</button>
+			<button class="flex items-center gap-1 bg-cyan-300 rounded px-2 py-1" :disabled="busy" @click="copyLink"><IconShare /> Share</button>
 		</div>
 	</div>
 	<PostCreateEdit type="edit" v-if="editing" :post-data="props.postData" @toggle-create-edit="() => (editing = !editing)" @update-data="d => emit('update-data', d)" />
 </template>
 
 <script setup lang="ts">
-	const props = defineProps<{ postData: EachPostType; onlyOne?: boolean }>()
+	const props = defineProps<{ postData: EachPostType; onlyOne?: boolean; noView?: boolean }>()
 	const emit = defineEmits<{ 'update-data': [EachPostType]; 'delete-data': [EachPostType['_id']] }>()
 
 	const route = useRoute()
@@ -40,6 +41,7 @@
 	}
 
 	async function deletePost() {
+		if (!globalThis.confirm(`Do you really want to delete this post?`)) return
 		deleting.value = true
 
 		try {

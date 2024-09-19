@@ -1,6 +1,6 @@
 <template>
 	<div class="text-center bg-cyan-200 p-2 rounded text-lg" v-if="pending">Loading posts...</div>
-	<PostView :post-data="data" v-else-if="data" @update-data="updatePostData" @delete-data="deletePostData" :only-one="true" />
+	<PostView :post-data="data" v-else-if="data" @update-data="updatePostData" @delete-data="deletePostData" :only-one="true" :no-view="true" />
 	<PostCreate @update-data="() => (refreshSidebar = true)" v-if="route.meta.admin" />
 </template>
 
