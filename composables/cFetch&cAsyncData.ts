@@ -116,7 +116,7 @@ async function cAsyncData<DataT>(handler: Function, options: cAsyncDataOptionsTy
 		const data: Ref<DataT | null> = ref(null)
 		const pending: Ref<boolean> = ref(true)
 		const error: Ref<ReturnType<typeof createError> | null> = ref(null)
-		const refresh = () => mainHandler(handler, options, keyArr, data, pending, error)
+		const refresh = () => mainHandler(handler, options, keyArr, data, pending, error, true)
 		const execute = () => mainHandler(handler, options, keyArr, data, pending, error)
 
 		if (options.default) data.value = options.default()
@@ -133,7 +133,7 @@ async function cAsyncData<DataT>(handler: Function, options: cAsyncDataOptionsTy
 	}
 }
 
-async function mainHandler(handler: Function, options: Omit<cAsyncDataOptionsType, 'getFromCache'>, keyArr: any[], data: Ref<unknown>, pending: Ref<boolean>, error: Ref<ReturnType<typeof createError> | null>) {
+async function mainHandler(handler: Function, options: Omit<cAsyncDataOptionsType, 'getFromCache'>, keyArr: any[], data: Ref<unknown>, pending: Ref<boolean>, error: Ref<ReturnType<typeof createError> | null>, forceUpdate: boolean = false) {
 	try {
 		const key = getKey(options.key, keyArr)
 		if (key === false) throw createError('[options.key] must be not empty string OR reactive value or getter that returns not empty string')
@@ -145,7 +145,7 @@ async function mainHandler(handler: Function, options: Omit<cAsyncDataOptionsTyp
 		if (!payload._errors) payload._errors = {}
 		if (!payload.data) payload.data = {}
 
-		if (options.getCachedData) {
+		if (options.getCachedData && forceUpdate === false) {
 			try {
 				const got = await options.getCachedData(key)
 				if (getKey(options.key, keyArr) !== key) return
@@ -178,7 +178,7 @@ async function mainHandler(handler: Function, options: Omit<cAsyncDataOptionsTyp
 				pending.value = false
 				return
 			}
-			if (import.meta.client && 'maxAge' in options) {
+			if (import.meta.client && forceUpdate === false && 'maxAge' in options) {
 				if (options.maxAge === Infinity) {
 					pending.value = false
 					return
