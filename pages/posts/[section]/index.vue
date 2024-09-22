@@ -15,6 +15,7 @@
 
 <script setup lang="ts">
 	const refreshSidebar = inject<Ref<boolean>>('refreshSidebar')
+	const sidebarData = inject<Ref<EachSectionType[]>>('sidebarData')
 	definePageMeta({
 		layout: 'advanced'
 	})
@@ -27,7 +28,7 @@
 	const route = useRoute()
 	const router = useRouter()
 	const section = computed(() => route.params.section)
-	const { data, pending, error } = await cLazyFetch<{ hasMore: boolean; result: EachPostType[] }>('/api/posts', { responseType: 'json', query: { section, page }, watch: [page] })
+	const { data, pending, error } = await cLazyFetch<{ hasMore: boolean; result: EachPostType[] }>('/api/posts', { responseType: 'json', query: { section, page }, watch: [page], maxAge: 10 * 60 })
 
 	watchEffect(() => {
 		if (error.value) showError(error.value)
@@ -59,6 +60,19 @@
 			const q = { ...route.query }
 			delete q.page
 			router.replace({ path: route.path, query: q, hash: route.hash })
+		}
+	})
+
+	watch(data, () => {
+		if (!data.value || !sidebarData?.value) return
+
+		for (let i = 0; i < data.value.result.length; i++) {
+			const doc = data.value.result[i]
+			if (sidebarData.value.find(el => el.section === doc.section && el.posts.find(e => e._id === doc._id))) continue
+			else {
+				refreshSidebar!.value = true
+				break
+			}
 		}
 	})
 </script>

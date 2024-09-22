@@ -18,7 +18,7 @@
 	const route = useRoute()
 	const router = useRouter()
 
-	const { data, pending, error } = await cLazyFetch<EachPostType>('/api/post', { responseType: 'json', query: { _id: route.params._id, section: route.params.section } })
+	const { data, pending, error } = await cLazyFetch<EachPostType>('/api/post', { responseType: 'json', query: { _id: route.params._id, section: route.params.section }, maxAge: 10 * 60 })
 
 	watchEffect(() => {
 		if (error.value) return showError(error.value)

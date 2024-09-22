@@ -17,6 +17,7 @@
 	const route = useRoute()
 	const router = useRouter()
 	const refreshSidebar = inject<Ref<boolean>>('refreshSidebar')
+	const sidebarData = inject<Ref<EachSectionType[]>>('sidebarData')
 	const page = computed<number>(() => {
 		const p = Number(route.query.page)
 		if (p <= 0 || !Number.isInteger(p)) return 1
@@ -27,7 +28,7 @@
 		layout: 'advanced'
 	})
 
-	const { data, pending, error } = await cLazyFetch<{ hasMore: boolean; result: EachPostType[] }>('/api/posts', { query: { page }, responseType: 'json', watch: [page] })
+	const { data, pending, error } = await cLazyFetch<{ hasMore: boolean; result: EachPostType[] }>('/api/posts', { query: { page }, responseType: 'json', watch: [page], maxAge: 10 * 60 })
 
 	watchEffect(() => {
 		if (error.value) showError(error.value)
@@ -54,6 +55,19 @@
 			const q = { ...route.query }
 			delete q.page
 			router.replace({ path: route.path, query: q, hash: route.hash })
+		}
+	})
+
+	watch(data, () => {
+		if (!data.value || !sidebarData?.value) return
+
+		for (let i = 0; i < data.value.result.length; i++) {
+			const doc = data.value.result[i]
+			if (sidebarData.value.find(el => el.section === doc.section && el.posts.find(e => e._id === doc._id))) continue
+			else {
+				refreshSidebar!.value = true
+				break
+			}
 		}
 	})
 </script>

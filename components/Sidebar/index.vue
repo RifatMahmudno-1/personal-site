@@ -1,10 +1,7 @@
 <template>
 	<SidebarContainer>
 		<ul class="w-[12rem] h-full overflow-auto bg-cyan-100 p-2 flex flex-col gap-2 break-all">
-			<li v-if="pending">
-				<div class="bg-cyan-300 px-2 py-1 rounded text-center">Loading</div>
-			</li>
-			<slot v-else-if="data?.length">
+			<slot v-if="data?.length">
 				<li>
 					<NuxtLink href="/" class="bg-cyan-300 px-2 py-1 rounded block">All Posts</NuxtLink>
 				</li>
@@ -20,6 +17,9 @@
 					</ul>
 				</li>
 			</slot>
+			<li v-else-if="pending">
+				<div class="bg-cyan-300 px-2 py-1 rounded text-center">Loading</div>
+			</li>
 			<li v-else>
 				<div class="bg-cyan-300 px-2 py-1 rounded text-center">Empty List</div>
 			</li>
@@ -35,10 +35,10 @@
 
 <script setup lang="ts">
 	const refreshSidebar = inject<Ref<boolean>>('refreshSidebar')
-	const datalistSections = inject<Ref<string[]>>('datalistSections')
+	const setSidebarData = inject<Ref<EachSectionType[]>>('sidebarData')
 	const route = useRoute()
 
-	const { data, pending, error, refresh } = await cLazyFetch<EachSectionType[]>('/api/posts/sections', { responseType: 'json' })
+	const { data, pending, error, refresh } = await cLazyFetch<EachSectionType[]>('/api/posts/sections', { responseType: 'json', getFromCache: true })
 
 	watchEffect(() => {
 		if (error.value) showError(error.value)
@@ -77,8 +77,8 @@
 				// add it to showing
 				showing.value = newArr
 
-				// add sections datalistSections
-				if (datalistSections?.value) datalistSections.value = data.value?.map(el => el.section) || []
+				// add data to setSidebarData
+				if (setSidebarData?.value && data.value) setSidebarData.value = data.value!
 			}
 		},
 		{
