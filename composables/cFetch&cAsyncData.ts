@@ -84,7 +84,6 @@ async function cAsyncData<DataT>(handler: Function, options: cAsyncDataOptionsTy
 		//validate handler and options
 		if (typeof handler !== 'function') throw createError('[handler] must be function')
 		if (options?.constructor !== Object) throw createError(`[options] must be object`)
-		if ('key' in options && (typeof options.key !== 'string' || (typeof options.key === 'string' && options.key)) && isRefOrGetter(options.key) === false) throw createError('[options.key] must be string or reactive value or getter')
 		if ('key' in options) {
 			// @ts-ignore
 			const k = getKey(options.key)
