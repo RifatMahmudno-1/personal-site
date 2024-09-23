@@ -106,7 +106,6 @@
 		}
 		if (!turnstileID.value) return
 		;(globalThis as any).turnstile.reset(turnstileID.value)
-		turnstileID.value = null
 		token.value = null
 	}
 
