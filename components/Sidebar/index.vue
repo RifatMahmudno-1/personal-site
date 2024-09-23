@@ -51,13 +51,11 @@
 		else showing.value.push(section)
 	}
 
-	if (refreshSidebar) {
-		watch(refreshSidebar, () => {
-			if (!refreshSidebar.value) return
-			if (!pending.value) refresh()
-			refreshSidebar.value = false
-		})
-	}
+	watch(refreshSidebar!, () => {
+		if (!refreshSidebar!.value) return
+		if (!pending.value) refresh()
+		refreshSidebar!.value = false
+	})
 
 	watch(
 		pending,
@@ -77,7 +75,7 @@
 				showing.value = newArr
 
 				// add data to setSidebarData
-				if (setSidebarData?.value && data.value) setSidebarData.value = data.value!
+				if (data.value) setSidebarData!.value = data.value!
 			}
 		},
 		{
