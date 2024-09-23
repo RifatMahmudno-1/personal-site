@@ -50,6 +50,7 @@
 	const { setShowToggleBtn } = useShowToggleBtn()
 	setShowToggleBtn(false)
 	const { error } = defineProps<{ error: NuxtError }>()
+	cClearAllData()
 
 	const router = useRouter()
 	const netError = computed<boolean>(() => {
