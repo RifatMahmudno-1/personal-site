@@ -18,6 +18,10 @@
 </template>
 
 <script setup lang="ts">
+	useHead({
+		title: `Register`
+	})
+
 	const router = useRouter()
 	const sending = ref(false)
 	const body = ref({

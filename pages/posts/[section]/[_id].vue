@@ -37,4 +37,16 @@
 		refreshSidebar!.value = true
 		router.push('/')
 	}
+
+	watch(data, () => {
+		if (!data.value) {
+			useHead({
+				title: `Post`
+			})
+		} else {
+			useHead({
+				title: `Post : ${data.value.title}`
+			})
+		}
+	})
 </script>

@@ -70,4 +70,14 @@
 			}
 		}
 	})
+
+	watch(
+		page,
+		() => {
+			useHead({
+				title: `All Posts - Page ${page.value}`
+			})
+		},
+		{ immediate: true }
+	)
 </script>

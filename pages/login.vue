@@ -16,6 +16,10 @@
 </template>
 
 <script setup lang="ts">
+	useHead({
+		title: `Login`
+	})
+
 	const router = useRouter()
 	const sending = ref(false)
 	const body = ref({

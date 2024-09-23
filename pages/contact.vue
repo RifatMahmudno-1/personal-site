@@ -19,6 +19,10 @@
 </template>
 
 <script setup lang="ts">
+	useHead({
+		title: `Contact`
+	})
+
 	const sending = ref(false)
 	const body = ref({
 		name: '',

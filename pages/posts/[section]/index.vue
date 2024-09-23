@@ -75,4 +75,14 @@
 			}
 		}
 	})
+
+	watch(
+		page,
+		() => {
+			useHead({
+				title: `Section : ${section.value} - Page ${page.value}`
+			})
+		},
+		{ immediate: true }
+	)
 </script>

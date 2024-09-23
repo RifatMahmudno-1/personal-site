@@ -15,6 +15,10 @@
 </template>
 
 <script setup lang="ts">
+	useHead({
+		title: `Contacted`
+	})
+
 	const { data, pending, error } = await cLazyFetch<EachContactType[]>('/api/contacted', { responseType: 'json' })
 	const deleting = ref(false)
 

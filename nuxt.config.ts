@@ -19,7 +19,7 @@ export default defineNuxtConfig({
 
 	app: {
 		head: {
-			title: 'Personal Site',
+			title: 'Rifat Mahmud',
 			htmlAttrs: { lang: 'en' },
 			noscript: [{ children: 'Javascript is required to run this website' }],
 			meta: [

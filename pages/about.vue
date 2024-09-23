@@ -18,25 +18,11 @@
 		<div class="bg-cyan-100 p-4 rounded">
 			<h2 class="w-fit mx-auto mb-4 border-b-2 px-4 border-cyan-300 font-semibold text-lg">Contact and Social Media</h2>
 			<div class="grid gap-2">
-				<div class="grid grid-cols-[4rem_1fr] gap-4 bg-cyan-300 rounded p-4 items-center">
-					<img src="/images/discord_logo.png" class="aspect-square object-contain object-center" />
+				<div class="grid grid-cols-[4rem_1fr] gap-4 bg-cyan-300 rounded p-4 items-center" v-for="social in socials">
+					<img :src="social.image_url" class="aspect-square object-contain object-center" />
 					<div>
-						<p>Discord</p>
-						<a class="underline" target="_blank" href="https://discord.com/users/715938370840166433">https://discord.com/users/715938370840166433</a>
-					</div>
-				</div>
-				<div class="grid grid-cols-[4rem_1fr] gap-4 bg-cyan-300 rounded p-4 items-center">
-					<img src="/images/github_logo.png" class="aspect-square object-contain object-center" />
-					<div>
-						<p>Github</p>
-						<a class="underline" target="_blank" href="https://github.com/RifatMahmudno-1">https://github.com/RifatMahmudno-1</a>
-					</div>
-				</div>
-				<div class="grid grid-cols-[4rem_1fr] gap-4 bg-cyan-300 rounded p-4 items-center">
-					<img src="/images/gmail_logo.png" class="aspect-square object-contain object-center" />
-					<div>
-						<p>Email</p>
-						<a class="underline" target="_blank" href="mailto:rifatmahmudpc@gmail.com">rifatmahmudpc@gmail.com</a>
+						<p>{{ social.title }}</p>
+						<a class="underline" target="_blank" :href="social.link">{{ social.linkText }}</a>
 					</div>
 				</div>
 			</div>
@@ -53,3 +39,30 @@
 		</div>
 	</div>
 </template>
+
+<script setup lang="ts">
+	useHead({
+		title: `About - Rifat Mahmud`
+	})
+
+	const socials = ref([
+		{
+			title: 'Discord',
+			link: 'https://discord.com/users/715938370840166433',
+			linkText: 'https://discord.com/users/715938370840166433',
+			image_url: '/images/discord_logo.png'
+		},
+		{
+			title: 'Github',
+			link: 'https://github.com/RifatMahmudno-1',
+			linkText: 'https://github.com/RifatMahmudno-1',
+			image_url: '/images/github_logo.png'
+		},
+		{
+			title: 'Email',
+			link: 'mailto:rifatmahmudpc@gmail.com',
+			linkText: 'rifatmahmudpc@gmail.com',
+			image_url: '/images/gmail_logo.png'
+		}
+	])
+</script>
