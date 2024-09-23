@@ -5,7 +5,7 @@ function isRefOrGetter(val: any) {
 	return false
 }
 
-function getKey(optionKey: undefined | MaybeRefOrGetter<string>, deps: any[]): string | false {
+function getKey(optionKey: undefined | MaybeRefOrGetter<string>, deps: any[] | (() => any[])): string | false {
 	if (optionKey) {
 		let key = undefined
 		if (typeof optionKey === 'string') key = optionKey
@@ -13,7 +13,7 @@ function getKey(optionKey: undefined | MaybeRefOrGetter<string>, deps: any[]): s
 		if (typeof key !== 'string' || key.length === 0) return false
 		return key
 	}
-	return deps ? hash(deps) : false
+	return deps ? (typeof deps === 'function' ? hash(deps()) : hash(deps)) : false
 }
 
 function getUrl(url: MaybeRefOrGetter<Parameters<typeof $fetch>[0]>): string | false {
@@ -105,7 +105,7 @@ async function cAsyncData<DataT>(handler: Function, options: cAsyncDataOptionsTy
 		}
 
 		// @ts-ignore
-		const keyArr: any[] = handler?.keyArr ? [...handler.keyArr()] : [handler]
+		const keyArr: any[] | (() => any[]) = handler?.keyArr ? handler.keyArr : [handler]
 		if (options.getFromCache === true) {
 			options.maxAge = Infinity
 		}
@@ -132,7 +132,7 @@ async function cAsyncData<DataT>(handler: Function, options: cAsyncDataOptionsTy
 	}
 }
 
-async function mainHandler(handler: Function, options: Omit<cAsyncDataOptionsType, 'getFromCache'>, keyArr: any[], data: Ref<unknown>, pending: Ref<boolean>, error: Ref<ReturnType<typeof createError> | null>, forceUpdate: boolean = false) {
+async function mainHandler(handler: Function, options: Omit<cAsyncDataOptionsType, 'getFromCache'>, keyArr: any[] | (() => any[]), data: Ref<unknown>, pending: Ref<boolean>, error: Ref<ReturnType<typeof createError> | null>, forceUpdate: boolean = false) {
 	try {
 		const key = getKey(options.key, keyArr)
 		if (key === false) throw createError('[options.key] must be not empty string OR reactive value or getter that returns not empty string')
