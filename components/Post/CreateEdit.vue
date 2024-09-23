@@ -122,8 +122,8 @@
 			// wait for dom update
 			await nextTick()
 			// move cursor
-			if (!isUrl) ele.selectionStart = ele.selectionEnd = content.length + start + 3
-			else ele.selectionStart = ele.selectionEnd = 1
+			if (start !== end && !isUrl) ele.selectionStart = ele.selectionEnd = content.length + start + 3
+			else ele.selectionStart = ele.selectionEnd = start + 1
 		}
 	}
 </script>
