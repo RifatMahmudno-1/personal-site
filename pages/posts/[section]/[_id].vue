@@ -19,10 +19,11 @@
 	})
 
 	const refreshSidebar = inject<Ref<boolean>>('refreshSidebar')!
+	const sidebarData = inject<Ref<EachSectionType[]>>('sidebarData')!
 	const route = useRoute()
 	const router = useRouter()
 
-	const { data, pending, error } = await cLazyFetch<EachPostType>('/api/post', { responseType: 'json', query: { _id: route.params._id, section: route.params.section }, maxAge: 10 * 60 })
+	const { data, pending, error, refresh } = await cLazyFetch<EachPostType>('/api/post', { responseType: 'json', query: { _id: route.params._id, section: route.params.section }, maxAge: 10 * 60 })
 
 	watchEffect(() => {
 		if (error.value) return showError(error.value)
@@ -42,8 +43,9 @@
 		router.push('/')
 	}
 
-	watch(pending, () => {
-		if (pending.value || !data.value) return
+	watch([pending, sidebarData], () => {
+		if (pending.value || !data.value || !sidebarData.value.length) return
+		if (!sidebarData.value.find(el => el.section === data.value?.section && el.posts.find(e => e._id === data.value?._id))) refresh()
 		useHead({
 			title: `Post : ${data.value.title}`
 		})

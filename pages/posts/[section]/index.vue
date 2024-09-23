@@ -28,7 +28,7 @@
 	const route = useRoute()
 	const router = useRouter()
 	const section = computed(() => route.params.section)
-	const { data, pending, error } = await cLazyFetch<{ hasMore: boolean; result: EachPostType[] }>('/api/posts', { responseType: 'json', query: { section, page }, watch: [page], maxAge: 10 * 60 })
+	const { data, pending, error, refresh } = await cLazyFetch<{ hasMore: boolean; result: EachPostType[] }>('/api/posts', { responseType: 'json', query: { section, page }, watch: [page], maxAge: 10 * 60 })
 
 	watchEffect(() => {
 		if (error.value) showError(error.value)
@@ -64,13 +64,26 @@
 	})
 
 	watch(pending, () => {
-		if (pending.value || !data.value) return
+		if (pending.value || !data.value || !sidebarData.value.length) return
 
 		for (let i = 0; i < data.value.result.length; i++) {
 			const doc = data.value.result[i]
 			if (sidebarData.value.find(el => el.section === doc.section && el.posts.find(e => e._id === doc._id))) continue
 			else {
 				refreshSidebar.value = true
+				break
+			}
+		}
+	})
+
+	watch(sidebarData, () => {
+		if (pending.value || !data.value || !sidebarData.value.length) return
+
+		for (let i = 0; i < data.value.result.length; i++) {
+			const doc = data.value.result[i]
+			if (sidebarData.value.find(el => el.section === doc.section && el.posts.find(e => e._id === doc._id))) continue
+			else {
+				refresh()
 				break
 			}
 		}
