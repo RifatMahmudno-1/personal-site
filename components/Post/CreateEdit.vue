@@ -13,7 +13,7 @@
 						<option :value="d" v-for="d in sidebarData.map(el => el.section)">{{ d }}</option>
 					</datalist>
 					<label for="post" class="col-[1/-1]">Content:</label>
-					<textarea id="post" class="min-h-[10rem] rounded p-1 resize-y col-[1/-1] bg-white" placeholder="Post content here" required v-model="postData.content" :disabled="sending"></textarea>
+					<textarea id="post" class="min-h-[10rem] rounded p-1 resize-y col-[1/-1] bg-white" placeholder="Post content here" required v-model="postData.content" :disabled="sending" @keydown="keydownHandler"></textarea>
 				</div>
 				<button class="w-fit mx-auto bg-cyan-300 px-2 py-1 rounded shadow hover:shadow-md transition-shadow" type="button" :disabled="sending" @click="uploading_image = !uploading_image">Upload image and get url</button>
 				<div class="flex justify-evenly gap-2">
@@ -62,5 +62,68 @@
 			showError(e)
 		}
 		sending.value = false
+	}
+
+	async function keydownHandler(e: KeyboardEvent) {
+		if (e.code === 'Tab') {
+			e.preventDefault()
+
+			const ele = e.target as HTMLTextAreaElement
+			const start = ele.selectionStart
+			const end = ele.selectionEnd
+			postData.value.content = ele.value.substring(0, start) + '\t' + ele.value.substring(start, end).split('\n').join('\n\t') + ele.value.substring(end)
+			// wait for dom update
+			await nextTick()
+			// move cursor
+			ele.selectionStart = ele.selectionEnd = start + 1
+		} else if (e.ctrlKey && e.code === 'KeyB') {
+			e.preventDefault()
+
+			const ele = e.target as HTMLTextAreaElement
+			const start = ele.selectionStart
+			const end = ele.selectionEnd
+			postData.value.content = ele.value.substring(0, start) + '**' + ele.value.substring(start, end) + '**' + ele.value.substring(end)
+			// wait for dom update
+			await nextTick()
+			// move cursor
+			if (start === end) ele.selectionStart = ele.selectionEnd = start + 2
+			else ele.selectionStart = ele.selectionEnd = end + 4
+		} else if (e.ctrlKey && e.code === 'KeyI') {
+			e.preventDefault()
+
+			const ele = e.target as HTMLTextAreaElement
+			const start = ele.selectionStart
+			const end = ele.selectionEnd
+			postData.value.content = ele.value.substring(0, start) + '*' + ele.value.substring(start, end) + '*' + ele.value.substring(end)
+			// wait for dom update
+			await nextTick()
+			// move cursor
+			if (start === end) ele.selectionStart = ele.selectionEnd = start + 1
+			else ele.selectionStart = ele.selectionEnd = end + 2
+		} else if (e.ctrlKey && e.code === 'KeyL') {
+			e.preventDefault()
+
+			const ele = e.target as HTMLTextAreaElement
+			const start = ele.selectionStart
+			const end = ele.selectionEnd
+
+			const content = ele.value.substring(start, end)
+			let isUrl = content.startsWith('/') || content.startsWith('#')
+			if (!isUrl) {
+				try {
+					new URL(content)
+					isUrl = true
+				} catch {
+					isUrl = false
+				}
+			}
+
+			postData.value.content = ele.value.substring(0, start) + (isUrl ? `[](${content})` : `[${content}]()`) + ele.value.substring(end)
+			// wait for dom update
+			await nextTick()
+			// move cursor
+			if (!isUrl) ele.selectionStart = ele.selectionEnd = content.length + start + 3
+			else ele.selectionStart = ele.selectionEnd = 1
+		}
 	}
 </script>
