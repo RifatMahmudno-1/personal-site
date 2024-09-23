@@ -34,6 +34,11 @@ const timeHistory = {
 		if (import.meta.server) return
 		const state = useState<Record<string, number>>('_fetchTimeHistory_', () => ({}))
 		state.value[key] = Date.now()
+	},
+	remove(key: string) {
+		if (import.meta.server) return
+		const state = useState<Record<string, number>>('_fetchTimeHistory_', () => ({}))
+		delete state.value[key]
 	}
 }
 
@@ -257,6 +262,19 @@ function cLazyFetch<DataT>(url: MaybeRefOrGetter<Parameters<typeof $fetch>[0]>, 
 	// @ts-ignore
 	options.lazy = true
 	return cFetch<DataT>(url, options)
+}
+
+function cClearData(key: MaybeRefOrGetter<string>) {
+	// @ts-ignore
+	const k = getKey(key)
+	if (k === false) throw createError('[key] must be not empty string OR reactive value or getter that returns not empty string')
+
+	const { payload } = useNuxtApp()
+	if (!payload._errors) payload._errors = {}
+	if (!payload.data) payload.data = {}
+
+	delete payload.data[k]
+	delete payload._errors[k]
 }
 
 export { cAsyncData, cLazyAsyncData, cFetch, cLazyFetch }
