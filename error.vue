@@ -7,8 +7,8 @@
 				<h1 class="text-center text-2xl">No internet connection.</h1>
 				<IconNoInternet class="w-[12rem] h-[12rem]" />
 				<div class="flex gap-2">
-					<NuxtLink href="/" class="border-2 border-cyan-400 rounded px-3 py-1 text-lg">Home</NuxtLink>
-					<button @click="router.go(0)" class="bg-cyan-300 rounded px-3 py-1 text-lg">Refresh</button>
+					<NuxtLink href="/" class="border-2 border-cyan-400 rounded px-3 py-1 text-lg shadow-md">Home</NuxtLink>
+					<button @click="router.go(0)" class="bg-cyan-300 rounded px-3 py-1 text-lg shadow-md">Refresh</button>
 				</div>
 			</div>
 
@@ -16,8 +16,8 @@
 				<h1 class="text-center text-2xl">You aren't authorized. <br />Login now.</h1>
 				<IconNoLog class="w-[12rem] h-[12rem]" />
 				<div class="flex gap-2">
-					<NuxtLink href="/login" class="border-2 border-cyan-400 rounded px-3 py-1 text-lg">Login</NuxtLink>
-					<button @click="router.go(0)" class="bg-cyan-300 rounded px-3 py-1 text-lg">Refresh</button>
+					<NuxtLink href="/login" class="border-2 border-cyan-400 rounded px-3 py-1 text-lg shadow-md">Login</NuxtLink>
+					<button @click="router.go(0)" class="bg-cyan-300 rounded px-3 py-1 text-lg shadow-md">Refresh</button>
 				</div>
 			</div>
 
@@ -25,8 +25,8 @@
 				<h1 class="text-center text-2xl">Page not found.</h1>
 				<Icon404 class="w-[12rem] h-[12rem]" />
 				<div class="flex gap-2">
-					<NuxtLink href="/" class="border-2 border-cyan-400 rounded px-3 py-1 text-lg">Home</NuxtLink>
-					<button @click="router.go(0)" class="bg-cyan-300 rounded px-3 py-1 text-lg">Refresh</button>
+					<NuxtLink href="/" class="border-2 border-cyan-400 rounded px-3 py-1 text-lg shadow-md">Home</NuxtLink>
+					<button @click="router.go(0)" class="bg-cyan-300 rounded px-3 py-1 text-lg shadow-md">Refresh</button>
 				</div>
 			</div>
 
@@ -34,8 +34,8 @@
 				<h1 class="text-center text-2xl">Some errors have occured.</h1>
 				<IconError class="w-[12rem] h-[12rem]" />
 				<div class="flex gap-2">
-					<NuxtLink href="/" class="border-2 border-cyan-400 rounded px-3 py-1 text-lg">Home</NuxtLink>
-					<button @click="router.go(0)" class="bg-cyan-300 rounded px-3 py-1 text-lg">Refresh</button>
+					<NuxtLink href="/" class="border-2 border-cyan-400 rounded px-3 py-1 text-lg shadow-md">Home</NuxtLink>
+					<button @click="router.go(0)" class="bg-cyan-300 rounded px-3 py-1 text-lg shadow-md">Refresh</button>
 				</div>
 			</div>
 		</main>
