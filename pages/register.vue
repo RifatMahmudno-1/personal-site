@@ -12,6 +12,9 @@
 				<label for="re_pass">&nbsp;</label>
 				<input type="password" name="re_pass" id="re_pass" required placeholder="Retype that password" minlength="8" maxlength="256" class="bg-white w-full rounded px-1 focus:shadow-md transition-shadow" v-model="body.re_pass" :disabled="sending" @input="comparePass" />
 			</div>
+			<div class="flex justify-center">
+				<Turnstile :site-key="siteKey" @token="v => (token = v)" :refresh="refreshID" />
+			</div>
 			<button class="self-center bg-cyan-400 border-2 border-cyan-500 px-4 py-0.5 rounded shadow hover:shadow-lg transition-shadow" :disabled="sending">Register</button>
 		</form>
 	</div>
@@ -31,19 +34,26 @@
 		re_pass: ''
 	})
 
+	// turnstile config
+	const siteKey = import.meta.env.VITE_TurnstileSiteKey
+	const token = ref<string | null>(null)
+	const refreshID = ref(1)
+
 	async function submit() {
 		sending.value = true
 		try {
-			const got: { status: string } | undefined = await $fetch('/api/register', { method: 'POST', body: { ...body.value, re_pass: undefined }, responseType: 'json' })
+			const got: { status: string } | undefined = await $fetch('/api/register', { method: 'POST', body: { ...body.value, re_pass: undefined, token: token.value }, responseType: 'json' })
 			switch (got?.status) {
 				case 'approved':
 					setNoti('Already registered. Please login')
 					router.push('/login')
 					break
 				case 'not_approved':
+					refreshID.value++
 					setNoti("Already registered but this account hasn't been approved yet. Please login later.")
 					break
 				case 'success':
+					refreshID.value++
 					setNoti('Registration successful. Please wait until an admin approves your account.')
 					break
 				default:

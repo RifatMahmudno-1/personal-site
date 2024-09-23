@@ -4,6 +4,7 @@ type BodyType = {
 	email: string
 	pass: string
 	stay: boolean
+	token: string
 }
 
 const schema: AJVSchema<BodyType> = {
@@ -11,9 +12,10 @@ const schema: AJVSchema<BodyType> = {
 	properties: {
 		email: { type: 'string', minLength: 8, maxLength: 256 },
 		pass: { type: 'string', minLength: 8, maxLength: 256 },
-		stay: { type: 'boolean' }
+		stay: { type: 'boolean' },
+		token: { type: 'string', minLength: 20, maxLength: 2048 }
 	},
-	required: ['email', 'pass', 'stay'],
+	required: ['email', 'pass', 'stay', 'token'],
 	additionalProperties: false
 }
 
@@ -25,6 +27,8 @@ export default defineEventHandler(async ev => {
 		const body: BodyType = await req.parseBody()
 		const validation = ajvValidate(schema, body)
 		if (validation.error) return res.setStatus(400).send(validation)
+
+		if (!(await validateTurnstile(process.env.TurnstileSecretKey!, body.token, req.getIP()))) return res.sendStatus(400)
 
 		const got = await mongo.client!.db('Personal_Site').collection('Admins').findOne({ email: body.email })
 

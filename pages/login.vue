@@ -10,6 +10,9 @@
 				<input type="checkbox" name="stay" id="stay" class="justify-self-end" :disabled="sending" v-model="body.stay" />
 				<label for="stay">Stay logged in?</label>
 			</div>
+			<div class="flex justify-center">
+				<Turnstile :site-key="siteKey" @token="v => (token = v)" :refresh="refreshID" />
+			</div>
 			<button class="self-center bg-cyan-400 border-2 border-cyan-500 px-4 py-0.5 rounded shadow hover:shadow-lg transition-shadow" :disabled="sending">Login</button>
 		</form>
 	</div>
@@ -28,18 +31,26 @@
 		stay: false
 	})
 
+	// turnstile config
+	const siteKey = import.meta.env.VITE_TurnstileSiteKey
+	const token = ref<string | null>(null)
+	const refreshID = ref(1)
+
 	async function submit() {
 		sending.value = true
 		try {
-			const got: { status: string } | undefined = await $fetch('/api/login', { method: 'POST', body: body.value, responseType: 'json' })
+			const got: { status: string } | undefined = await $fetch('/api/login', { method: 'POST', body: { ...body.value, token: token.value }, responseType: 'json' })
 			switch (got?.status) {
 				case 'invalid_email':
+					refreshID.value++
 					setNoti('Invalid email was provided')
 					break
 				case 'not_approved':
+					refreshID.value++
 					setNoti("This email hasn't been approved yet. Please try later.")
 					break
 				case 'invalid_pass':
+					refreshID.value++
 					setNoti('Invalid password provided')
 					break
 				case 'success':
