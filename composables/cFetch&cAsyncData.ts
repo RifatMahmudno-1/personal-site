@@ -39,6 +39,11 @@ const timeHistory = {
 		if (import.meta.server) return
 		const state = useState<Record<string, number>>('_fetchTimeHistory_', () => ({}))
 		delete state.value[key]
+	},
+	removeAll() {
+		if (import.meta.server) return
+		const state = useState<Record<string, number>>('_fetchTimeHistory_', () => ({}))
+		state.value = {}
 	}
 }
 
@@ -277,4 +282,10 @@ function cClearData(key: MaybeRefOrGetter<string>) {
 	delete payload._errors[k]
 }
 
-export { cAsyncData, cLazyAsyncData, cFetch, cLazyFetch }
+function cClearAllData() {
+	const { payload } = useNuxtApp()
+	payload._errors = {}
+	payload.data = {}
+}
+
+export { cAsyncData, cLazyAsyncData, cFetch, cLazyFetch, cClearData, cClearAllData }
