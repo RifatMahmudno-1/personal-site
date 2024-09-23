@@ -53,10 +53,9 @@
 
 	if (refreshSidebar) {
 		watch(refreshSidebar, () => {
-			if (!pending.value && refreshSidebar?.value) {
-				refresh()
-				refreshSidebar.value = false
-			}
+			if (!refreshSidebar.value) return
+			if (!pending.value) refresh()
+			refreshSidebar.value = false
 		})
 	}
 
