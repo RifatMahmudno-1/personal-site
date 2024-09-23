@@ -150,7 +150,7 @@ async function mainHandler(handler: Function, options: Omit<cAsyncDataOptionsTyp
 		pending.value = true
 
 		const { payload, isHydrating } = useNuxtApp()
-		if (import.meta.client && !isHydrating) await nextTick()
+		if (import.meta.client && !isHydrating) await new Promise(r => nextTick().then(r).catch(r))
 		if (!payload._errors) payload._errors = {}
 		if (!payload.data) payload.data = {}
 
