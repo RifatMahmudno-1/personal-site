@@ -9,7 +9,7 @@
 					<input type="text" id="title" placeholder="Enter post title" class="rounded px-1 bg-white" required v-model="postData.title" :disabled="sending" />
 					<label for="section">Section:</label>
 					<input type="text" id="section" placeholder="Enter post section" class="rounded px-1 bg-white" required v-model="postData.section" :disabled="sending" list="list_section" />
-					<datalist v-if="sidebarData?.length" id="list_section">
+					<datalist v-if="sidebarData.length" id="list_section">
 						<option :value="d" v-for="d in sidebarData.map(el => el.section)">{{ d }}</option>
 					</datalist>
 					<label for="post" class="col-[1/-1]">Content:</label>
@@ -29,7 +29,7 @@
 <script setup lang="ts">
 	const emit = defineEmits<{ 'toggle-create-edit': []; 'update-data': [EachPostType] }>()
 	const props = defineProps<{ type: 'create' | 'edit'; postData?: EachPostType }>()
-	const sidebarData = inject<Ref<EachSectionType[]>>('sidebarData')
+	const sidebarData = inject<Ref<EachSectionType[]>>('sidebarData')!
 
 	const previewing = ref(false)
 	const uploading_image = ref(false)

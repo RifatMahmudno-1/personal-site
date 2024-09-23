@@ -14,8 +14,8 @@
 </template>
 
 <script setup lang="ts">
-	const refreshSidebar = inject<Ref<boolean>>('refreshSidebar')
-	const sidebarData = inject<Ref<EachSectionType[]>>('sidebarData')
+	const refreshSidebar = inject<Ref<boolean>>('refreshSidebar')!
+	const sidebarData = inject<Ref<EachSectionType[]>>('sidebarData')!
 	definePageMeta({
 		layout: 'advanced'
 	})
@@ -43,14 +43,14 @@
 		} else if (ind !== -1) {
 			data.value.result.splice(ind, 1)
 		}
-		refreshSidebar!.value = true
+		refreshSidebar.value = true
 	}
 
 	function deleteData(_id: EachPostType['_id']) {
 		if (pending.value || !data.value) return
 		const ind = data.value.result.findIndex(el => el._id === _id)
 		if (ind !== -1) data.value.result.splice(ind, 1)
-		refreshSidebar!.value = true
+		refreshSidebar.value = true
 		if (!data.value.result.length) router.push('/')
 	}
 
@@ -63,14 +63,14 @@
 		}
 	})
 
-	watch(data, () => {
-		if (!data.value || !sidebarData?.value) return
+	watch(pending, () => {
+		if (pending.value || !data.value) return
 
 		for (let i = 0; i < data.value.result.length; i++) {
 			const doc = data.value.result[i]
 			if (sidebarData.value.find(el => el.section === doc.section && el.posts.find(e => e._id === doc._id))) continue
 			else {
-				refreshSidebar!.value = true
+				refreshSidebar.value = true
 				break
 			}
 		}

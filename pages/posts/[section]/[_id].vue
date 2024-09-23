@@ -5,6 +5,10 @@
 </template>
 
 <script setup lang="ts">
+	useHead({
+		title: `Post`
+	})
+
 	definePageMeta({
 		layout: 'advanced',
 		middleware: [
@@ -14,7 +18,7 @@
 		]
 	})
 
-	const refreshSidebar = inject<Ref<boolean>>('refreshSidebar')
+	const refreshSidebar = inject<Ref<boolean>>('refreshSidebar')!
 	const route = useRoute()
 	const router = useRouter()
 
@@ -30,23 +34,18 @@
 		} else {
 			router.push(`/posts/${d.section}/${d._id}`)
 		}
-		refreshSidebar!.value = true
+		refreshSidebar.value = true
 	}
 
 	function deletePostData() {
-		refreshSidebar!.value = true
+		refreshSidebar.value = true
 		router.push('/')
 	}
 
-	watch(data, () => {
-		if (!data.value) {
-			useHead({
-				title: `Post`
-			})
-		} else {
-			useHead({
-				title: `Post : ${data.value.title}`
-			})
-		}
+	watch(pending, () => {
+		if (pending.value || !data.value) return
+		useHead({
+			title: `Post : ${data.value.title}`
+		})
 	})
 </script>

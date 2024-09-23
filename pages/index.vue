@@ -16,8 +16,8 @@
 <script setup lang="ts">
 	const route = useRoute()
 	const router = useRouter()
-	const refreshSidebar = inject<Ref<boolean>>('refreshSidebar')
-	const sidebarData = inject<Ref<EachSectionType[]>>('sidebarData')
+	const refreshSidebar = inject<Ref<boolean>>('refreshSidebar')!
+	const sidebarData = inject<Ref<EachSectionType[]>>('sidebarData')!
 	const page = computed<number>(() => {
 		const p = Number(route.query.page)
 		if (p <= 0 || !Number.isInteger(p)) return 1
@@ -39,14 +39,14 @@
 		const ind = data.value.result.findIndex(el => el._id === d._id)
 		if (ind === -1) data.value.result.unshift(d)
 		else data.value.result[ind] = d
-		refreshSidebar!.value = true
+		refreshSidebar.value = true
 	}
 
 	function deleteData(_id: EachPostType['_id']) {
 		if (pending.value || !data.value) return
 		const ind = data.value.result.findIndex(el => el._id === _id)
 		if (ind !== -1) data.value.result.splice(ind, 1)
-		refreshSidebar!.value = true
+		refreshSidebar.value = true
 	}
 
 	onMounted(() => {
@@ -58,14 +58,14 @@
 		}
 	})
 
-	watch(data, () => {
-		if (!data.value || !sidebarData?.value) return
+	watch(pending, () => {
+		if (pending.value || !data.value) return
 
 		for (let i = 0; i < data.value.result.length; i++) {
 			const doc = data.value.result[i]
 			if (sidebarData.value.find(el => el.section === doc.section && el.posts.find(e => e._id === doc._id))) continue
 			else {
-				refreshSidebar!.value = true
+				refreshSidebar.value = true
 				break
 			}
 		}
