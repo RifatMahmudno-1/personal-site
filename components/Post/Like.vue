@@ -3,7 +3,7 @@
 		<IconLoading v-if="busy" />
 		<IconHeart v-else-if="liked" />
 		<IconHeartEmpty v-else />
-		Like | {{ likes }}
+		<span :class="$route.meta.admin ? 'max-[400px]:hidden' : ''">Like | </span>{{ likes }}
 	</button>
 </template>
 

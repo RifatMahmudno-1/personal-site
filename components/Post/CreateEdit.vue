@@ -3,7 +3,7 @@
 		<div class="fixed top-[var(--nav-height)] left-0 w-full h-[var(--main-con-height)] bg-black bg-opacity-20 z-20 grid items-center justify-items-center p-2">
 			<PostCreateEditPreview v-if="previewing" @toggle-previewing="() => (previewing = !previewing)" :post-data="postData" />
 			<PostUploadImage v-else-if="uploading_image" @toggle-uploading-image="uploading_image = !uploading_image" />
-			<form class="w-full max-h-full overflow-auto max-w-[70%] p-4 bg-cyan-200 rounded shadow-md grid gap-4" @submit.prevent="submit" v-else>
+			<form class="w-full max-h-full overflow-auto max-w-[50rem] p-4 bg-cyan-200 rounded shadow-md grid gap-4" @submit.prevent="submit" v-else>
 				<div class="grid gap-2 grid-cols-[auto_1fr]">
 					<label for="title">Title:</label>
 					<input type="text" id="title" placeholder="Enter post title" class="rounded px-1 bg-white" required v-model="postData.title" :disabled="sending" />

@@ -23,6 +23,7 @@
 	const deleting = ref(false)
 
 	async function deleteMessage(each: EachContactType) {
+		if (!globalThis.confirm(`Do you really want to delete this?`)) return
 		deleting.value = true
 		try {
 			await $fetch('/api/contacted', { method: 'DELETE', body: { _id: each._id } })

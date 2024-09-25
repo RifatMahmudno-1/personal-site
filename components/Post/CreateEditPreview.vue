@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full max-h-full overflow-auto max-w-[70%] p-4 bg-cyan-200 rounded shadow-md grid gap-4">
+	<div class="w-full max-h-full overflow-auto max-w-[50rem] p-4 bg-cyan-200 rounded shadow-md grid gap-4">
 		<div class="grid gap-0.5">
 			<h2 class="font-semibold text-lg">{{ props.postData.title || 'Title Not provided' }}</h2>
 			<div class="flex gap-2 text-sm flex-wrap">

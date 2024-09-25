@@ -2,21 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-	--nav-height: 3rem;
-	--main-con-height: calc(100dvh - var(--nav-height));
-}
+@layer base {
+	html {
+		@apply max-[800px]:text-sm;
+	}
 
-svg {
-	@apply inline-block align-middle;
-}
+	:root {
+		--nav-height: 3rem;
+		--main-con-height: calc(100dvh - var(--nav-height));
+	}
 
-input,
-button,
-textarea {
-	@apply outline-none disabled:opacity-70;
-}
+	svg {
+		@apply inline-block align-middle;
+	}
 
-.loading {
-	@apply animate-pulse;
+	input,
+	button,
+	textarea {
+		@apply outline-none disabled:opacity-70;
+	}
+
+	.loading {
+		@apply animate-pulse;
+	}
 }

@@ -12,8 +12,8 @@
 						<IconArrowDown v-else />
 					</div>
 					<ul class="ml-2 mt-1 pl-2 flex flex-col gap-1 border-l-2 border-cyan-400" v-if="showing.includes(el.section)">
-						<NuxtLink :href="`/posts/${el.section}`" class="bg-cyan-200 rounded px-2 line-clamp-1">Show All</NuxtLink>
-						<NuxtLink :href="`/posts/${el.section}/${e._id}`" class="bg-cyan-200 rounded px-2 line-clamp-1" v-for="e in el.posts" :key="e._id">{{ e.title }}</NuxtLink>
+						<NuxtLink :href="`/posts/${el.section}`" class="bg-cyan-200 rounded px-2 py-0.5 line-clamp-1">Show All</NuxtLink>
+						<NuxtLink :href="`/posts/${el.section}/${e._id}`" class="bg-cyan-200 rounded px-2 py-0.5 line-clamp-1" v-for="e in el.posts" :key="e._id">{{ e.title }}</NuxtLink>
 					</ul>
 				</li>
 			</slot>

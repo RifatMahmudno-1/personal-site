@@ -1,5 +1,5 @@
 <template>
-	<form class="w-full max-h-full overflow-auto max-w-[70%] p-4 bg-cyan-200 rounded shadow-md grid gap-4" @submit.prevent="send">
+	<form class="w-full max-h-full overflow-auto max-w-[50rem] p-4 bg-cyan-200 rounded shadow-md grid gap-4" @submit.prevent="send">
 		<h2 class="border-b-2 px-2 border-cyan-500 justify-self-center">Upload Image</h2>
 		<input type="file" accept="image/jpeg,image/jpg,image/gif,image/png,image/apng,image/tiff" class="w-full" @change="handleImage" required :disabled="sending" v-if="!link" />
 		<div class="grid gap-2 items-center" v-else>

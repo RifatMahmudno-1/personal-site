@@ -1,12 +1,12 @@
 <template>
 	<div class="grid gap-4">
 		<div class="bg-cyan-100 p-4 rounded">
-			<div class="grid grid-cols-[auto_auto] justify-evenly mb-4 gap-4">
-				<h1 class="self-center text-3xl font-bold">
+			<div class="grid grid-cols-[auto_auto] max-[550px]:grid-cols-1 justify-evenly mb-4 gap-4">
+				<h1 class="self-center text-3xl max-[550px]:text-2xl font-bold max-[550px]:text-center">
 					Hi There! <br />
 					My name is Rifat Mahmud
 				</h1>
-				<img src="/images/profile_logo.png" class="border-2 border-cyan-300 rounded-full aspect-square object-center object-cover p-2 w-[10rem]" />
+				<img src="/images/profile_logo.png" class="border-2 border-cyan-300 rounded-full aspect-square object-center object-cover p-2 w-[10rem] justify-self-center" />
 			</div>
 			<ul class="bg-cyan-200 rounded list-inside list-disc p-4">
 				<li>I'm a self learnt full stack web developer.</li>
@@ -22,7 +22,7 @@
 					<img :src="social.image_url" class="aspect-square object-contain object-center" />
 					<div>
 						<p>{{ social.title }}</p>
-						<a class="underline" target="_blank" :href="social.link">{{ social.linkText }}</a>
+						<a class="underline break-all" target="_blank" :href="social.link">{{ social.linkText }}</a>
 					</div>
 				</div>
 			</div>

@@ -2,7 +2,7 @@
 	<div class="bg-cyan-200 p-2 rounded grid gap-2">
 		<div class="grid gap-0.5">
 			<h2 class="font-semibold text-xl">{{ props.postData.title }}</h2>
-			<div class="flex gap-2 text-sm">
+			<div class="flex gap-2 text-sm flex-wrap">
 				<p class="bg-white bg-opacity-70 px-1 rounded"><span class="text-cyan-500 font-semibold">@</span> {{ props.postData.section }}</p>
 				<p class="bg-white bg-opacity-70 px-1 rounded">{{ parseDate(props.postData.createdAt) }}</p>
 				<p class="bg-white bg-opacity-70 px-1 rounded" v-if="props.postData.modifiedAt">Edited</p>
@@ -11,10 +11,22 @@
 		<MarkdownRederer :md="props.postData.content" class="bg-white p-1 px-2 rounded overflow-auto" :class="!props.onlyOne ? 'max-h-[15rem]' : ''" />
 		<div class="flex justify-evenly">
 			<PostLike :disabled="busy" :likes="props.postData.likes" :_id="props.postData._id" @liking="v => (liking = v)" />
-			<button v-if="!noView" class="flex items-center gap-1 bg-cyan-300 rounded px-2 py-1" @click="() => $router.push(`/posts/${props.postData.section}/${props.postData._id}`)" :disabled="busy"><IconEye /> View</button>
-			<button class="flex items-center gap-1 bg-cyan-300 rounded px-2 py-1" @click="() => (editing = true)" :disabled="busy" v-if="route.meta.admin"><IconEdit /> Edit</button>
-			<button class="flex items-center gap-1 bg-red-500 rounded px-2 py-1" @click="deletePost" :disabled="busy" v-if="route.meta.admin"><IconDelete /> Delete</button>
-			<button class="flex items-center gap-1 bg-cyan-300 rounded px-2 py-1" :disabled="busy" @click="copyLink"><IconShare /> Share</button>
+			<button v-if="!noView" class="flex items-center gap-1 bg-cyan-300 rounded px-2 py-1" @click="() => $router.push(`/posts/${props.postData.section}/${props.postData._id}`)" :disabled="busy">
+				<IconEye />
+				<span :class="route.meta.admin ? 'max-[400px]:hidden' : ''">View</span>
+			</button>
+			<button class="flex items-center gap-1 bg-cyan-300 rounded px-2 py-1" @click="() => (editing = true)" :disabled="busy" v-if="route.meta.admin">
+				<IconEdit />
+				<span :class="route.meta.admin ? 'max-[400px]:hidden' : ''">Edit</span>
+			</button>
+			<button class="flex items-center gap-1 bg-red-500 rounded px-2 py-1" @click="deletePost" :disabled="busy" v-if="route.meta.admin">
+				<IconDelete />
+				<span :class="route.meta.admin ? 'max-[400px]:hidden' : ''">Delete</span>
+			</button>
+			<button class="flex items-center gap-1 bg-cyan-300 rounded px-2 py-1" :disabled="busy" @click="copyLink">
+				<IconShare />
+				<span :class="route.meta.admin ? 'max-[400px]:hidden' : ''">Share</span>
+			</button>
 		</div>
 	</div>
 	<PostCreateEdit type="edit" v-if="editing" :post-data="props.postData" @toggle-create-edit="() => (editing = !editing)" @update-data="d => emit('update-data', d)" />
