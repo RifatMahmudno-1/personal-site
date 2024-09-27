@@ -23,14 +23,17 @@ type ParsedForm = {
 type req = {
 	method: import('h3').H3Event['method']
 	path: import('h3').H3Event['path']
+	getProtocol(opts?: Parameters<typeof getRequestProtocol>[1]): ReturnType<typeof getRequestProtocol>
+	getHost(opts?: Parameters<typeof getRequestHost>[1]): ReturnType<typeof getRequestHost>
 	getUrl(opts?: Parameters<typeof getRequestURL>[1]): ReturnType<typeof getRequestURL>
 	getHeaders(): ReturnType<typeof getRequestHeaders>
 	getHeader: (name: Parameters<typeof getRequestHeader>[1]) => ReturnType<typeof getRequestHeader>
 	getCookies(): ReturnType<typeof parseCookies>
 	getQuery<T>(): ReturnType<typeof getQuery<T>>
 	getParams(): ReturnType<typeof getRouterParams>
-	getIP(): string | undefined
+	getIP(): ReturnType<typeof getRequestIP>
 	getCookie: (name: Parameters<typeof getCookie>[1]) => ReturnType<typeof getCookie>
+	getFingerprint(opts?: Parameters<typeof getRequestFingerprint>[1]): ReturnType<typeof getRequestFingerprint>
 	parseBody(): Promise<any>
 	parseForm(): Promise<any> //Promise<ParsedForm>
 }
@@ -69,12 +72,15 @@ class ModifyH3 {
 			method: app.method,
 			path: app.path,
 			getUrl: opts => getRequestURL(app, opts),
+			getProtocol: opts => getRequestProtocol(app, opts),
+			getHost: opts => getRequestHost(app, opts),
 			getHeaders: () => getRequestHeaders(app),
 			getHeader: name => getRequestHeader(app, name),
 			getCookies: () => parseCookies(app),
 			getQuery: () => getQuery(app),
 			getParams: () => getRouterParams(app),
-			getIP: () => getRequestHeader(app, 'x-forwarded-for'),
+			getIP: () => getRequestIP(app),
+			getFingerprint: opts => getRequestFingerprint(app, opts),
 			getCookie: name => getCookie(app, name),
 			parseBody: async () => {
 				if (!app.context.modifyH3!.parsedBodyStat) {
