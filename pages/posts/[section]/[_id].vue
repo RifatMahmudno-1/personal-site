@@ -5,10 +5,6 @@
 </template>
 
 <script setup lang="ts">
-	useHead({
-		title: `Post`
-	})
-
 	definePageMeta({
 		layout: 'advanced',
 		middleware: [
@@ -42,6 +38,10 @@
 		refreshSidebar.value = true
 		router.push('/')
 	}
+
+	useHead({
+		title: data.value?.title ? `Post : ${data.value.title}` : `Post`
+	})
 
 	watch([pending, sidebarData], () => {
 		if (pending.value || !data.value || !sidebarData.value.length) return
