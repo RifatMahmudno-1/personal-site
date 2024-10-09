@@ -1,6 +1,6 @@
 <template>
 	<SidebarContainer>
-		<ul class="w-[12rem] h-full overflow-auto bg-cyan-100 p-2 flex flex-col gap-2 break-all">
+		<ul class="h-full overflow-auto bg-cyan-100 p-2 flex flex-col gap-2 break-all">
 			<slot v-if="data?.length">
 				<li>
 					<NuxtLink href="/" class="bg-cyan-300 px-2 py-1 rounded block">All Posts</NuxtLink>
