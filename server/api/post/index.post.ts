@@ -3,6 +3,7 @@ type BodyType = {
 	title: string
 	section: string
 	content: string
+	private: boolean
 }
 
 const schema: AJVSchema<BodyType> = {
@@ -11,9 +12,10 @@ const schema: AJVSchema<BodyType> = {
 		_id: { type: 'string', minLength: 24, maxLength: 24, nullable: true },
 		title: { type: 'string', minLength: 1 },
 		section: { type: 'string', minLength: 1 },
-		content: { type: 'string', minLength: 1 }
+		content: { type: 'string', minLength: 1 },
+		private: { type: 'boolean' }
 	},
-	required: ['title', 'section', 'content'],
+	required: ['title', 'section', 'content', 'private'],
 	additionalProperties: false
 }
 
@@ -34,6 +36,7 @@ export default defineEventHandler(async ev => {
 						title: body.title,
 						section: body.section,
 						content: body.content,
+						private: body.private,
 						...(!body._id ? { createdAt: Date.now(), likes: 0 } : { modifiedAt: Date.now() })
 					}
 				},

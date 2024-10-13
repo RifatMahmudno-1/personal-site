@@ -4,11 +4,13 @@
 			<PostCreateEditPreview v-if="previewing" @toggle-previewing="() => (previewing = !previewing)" :post-data="postData" />
 			<PostUploadImage v-else-if="uploading_image" @toggle-uploading-image="uploading_image = !uploading_image" />
 			<form class="w-full max-h-full overflow-auto max-w-[50rem] p-4 bg-cyan-200 rounded shadow-md grid gap-4" @submit.prevent="submit" v-else>
-				<div class="grid gap-2 grid-cols-[auto_1fr]">
+				<div class="grid gap-2 grid-cols-[auto_1fr] items-center">
 					<label for="title">Title:</label>
 					<input type="text" id="title" placeholder="Enter post title" class="rounded px-1 bg-white" required v-model="postData.title" :disabled="sending" />
 					<label for="section">Section:</label>
 					<input type="text" id="section" placeholder="Enter post section" class="rounded px-1 bg-white" required v-model="postData.section" :disabled="sending" list="list_section" />
+					<div class="justify-self-end"><input type="checkbox" id="private" v-model="postData.private" /></div>
+					<label for="private" class="select-none">Do you want to make this post Private?</label>
 					<datalist v-if="sidebarData.length" id="list_section">
 						<option :value="d" v-for="d in sidebarData.map(el => el.section)">{{ d }}</option>
 					</datalist>
@@ -38,7 +40,8 @@
 		section: props.type === 'edit' ? props.postData!.section : '',
 		content: props.type === 'edit' ? props.postData!.content : '',
 		createdAt: props.type === 'edit' ? props.postData!.createdAt : Date.now(),
-		modifiedAt: props.type === 'edit' ? Date.now() : undefined
+		modifiedAt: props.type === 'edit' ? Date.now() : undefined,
+		private: props.type === 'edit' ? props.postData!.private || false : false
 	})
 
 	const sending = ref(false)
@@ -52,6 +55,7 @@
 					title: postData.value.title,
 					section: postData.value.section,
 					content: postData.value.content,
+					private: postData.value.private,
 					_id: props.postData?._id || undefined
 				}
 			})

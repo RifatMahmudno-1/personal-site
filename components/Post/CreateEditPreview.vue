@@ -4,6 +4,7 @@
 			<h2 class="font-semibold text-lg">{{ props.postData.title || 'Title Not provided' }}</h2>
 			<div class="flex gap-2 text-sm flex-wrap">
 				<p class="bg-white bg-opacity-70 px-1 rounded"><span class="text-cyan-500 font-semibold">@</span> {{ props.postData.section || 'Section Not provided' }}</p>
+				<p class="bg-white bg-opacity-70 px-1 rounded">{{ postData.private ? 'Private' : 'Public' }} Post</p>
 				<p class="bg-white bg-opacity-70 px-1 rounded">{{ parseDate(props.postData.createdAt) }}</p>
 				<p class="bg-white bg-opacity-70 px-1 rounded" v-if="props.postData.modifiedAt">Edited</p>
 			</div>
