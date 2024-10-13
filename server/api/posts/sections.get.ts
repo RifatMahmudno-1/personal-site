@@ -1,10 +1,15 @@
 export default defineEventHandler(async ev => {
+	const authorized = await auth(ev)
+
 	const { res } = modifyH3(ev)
 	try {
 		const got = await mongo
 			.client!.db('Personal_Site')
 			.collection('Posts')
 			.aggregate([
+				{
+					$match: !authorized ? { private: { $ne: true } } : {}
+				},
 				{
 					$group: {
 						_id: '$section',

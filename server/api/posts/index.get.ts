@@ -20,6 +20,8 @@ const schema: AJVSchema<QueryType> = {
 }
 
 export default defineEventHandler(async ev => {
+	const authorized = await auth(ev)
+
 	const { req, res } = modifyH3(ev)
 	try {
 		const query: QueryType = req.getQuery()
@@ -30,7 +32,7 @@ export default defineEventHandler(async ev => {
 		const got = await mongo
 			.client!.db('Personal_Site')
 			.collection('Posts')
-			.find(query.section ? { section: query.section } : {})
+			.find({ ...(query.section ? { section: query.section } : {}), ...(!authorized ? { private: { $ne: true } } : {}) })
 			.sort({ createdAt: -1 })
 			.skip((Number(query.page) - 1) * perPage)
 			.limit(perPage + 1)

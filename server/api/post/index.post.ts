@@ -20,6 +20,8 @@ const schema: AJVSchema<BodyType> = {
 }
 
 export default defineEventHandler(async ev => {
+	if (!(await auth(ev))) return sendUnauthorized(ev)
+
 	const { req, res } = modifyH3(ev)
 	try {
 		const body: BodyType = await req.parseBody()

@@ -26,6 +26,7 @@ export default defineEventHandler(async ev => {
 			.findOne({ _id: new mongo.ObjectId(query._id), section: query.section })
 
 		if (!got) return res.sendStatus(404)
+		if (got.private && !(await auth(ev))) return sendUnauthorized(ev)
 		return res.send(got)
 	} catch (e) {
 		console.log(e)

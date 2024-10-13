@@ -23,7 +23,7 @@ export default defineEventHandler(async ev => {
 		await mongo
 			.client!.db('Personal_Site')
 			.collection('Posts')
-			.updateOne({ _id: new mongo.ObjectId(body._id) }, { $inc: { likes: body.type === 'add' ? 1 : -1 } })
+			.updateOne({ _id: new mongo.ObjectId(body._id), private: { $ne: true } }, { $inc: { likes: body.type === 'add' ? 1 : -1 } })
 
 		return res.sendEmpty()
 	} catch (e) {

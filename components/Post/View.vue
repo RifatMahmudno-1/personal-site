@@ -11,7 +11,7 @@
 		</div>
 		<MarkdownRederer :md="props.postData.content" class="bg-white p-1 px-2 rounded overflow-auto" :class="!props.onlyOne ? 'max-h-[15rem]' : ''" />
 		<div class="flex justify-evenly">
-			<PostLike :disabled="busy" :likes="props.postData.likes" :_id="props.postData._id" @liking="v => (liking = v)" />
+			<PostLike :disabled="props.postData.private ? true : busy" :likes="props.postData.likes" :_id="props.postData._id" @liking="v => (liking = v)" />
 			<button v-if="!noView" class="flex items-center gap-1 bg-cyan-300 rounded px-2 py-1" @click="() => $router.push(`/posts/${props.postData.section}/${props.postData._id}`)" :disabled="busy">
 				<IconEye />
 				<span :class="route.meta.admin ? 'max-[400px]:hidden' : ''">View</span>
