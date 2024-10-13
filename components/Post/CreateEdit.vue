@@ -9,8 +9,10 @@
 					<input type="text" id="title" placeholder="Enter post title" class="rounded px-1 bg-white" required v-model="postData.title" :disabled="sending" />
 					<label for="section">Section:</label>
 					<input type="text" id="section" placeholder="Enter post section" class="rounded px-1 bg-white" required v-model="postData.section" :disabled="sending" list="list_section" />
+					<div class="justify-self-end"><input type="checkbox" id="pinned" v-model="postData.pinned" /></div>
+					<label for="pinned" class="select-none">Do you want to pin this post?</label>
 					<div class="justify-self-end"><input type="checkbox" id="private" v-model="postData.private" /></div>
-					<label for="private" class="select-none">Do you want to make this post Private?</label>
+					<label for="private" class="select-none">Do you want to make this post private?</label>
 					<datalist v-if="sidebarData.length" id="list_section">
 						<option :value="d" v-for="d in sidebarData.map(el => el.section)">{{ d }}</option>
 					</datalist>
@@ -41,7 +43,8 @@
 		content: props.type === 'edit' ? props.postData!.content : '',
 		createdAt: props.type === 'edit' ? props.postData!.createdAt : Date.now(),
 		modifiedAt: props.type === 'edit' ? Date.now() : undefined,
-		private: props.type === 'edit' ? props.postData!.private || false : false
+		private: props.type === 'edit' ? props.postData!.private || false : false,
+		pinned: props.type === 'edit' ? props.postData!.pinned || false : false
 	})
 
 	const sending = ref(false)
@@ -55,7 +58,8 @@
 					title: postData.value.title,
 					section: postData.value.section,
 					content: postData.value.content,
-					private: postData.value.private,
+					private: postData.value.private || undefined,
+					pinned: postData.value.pinned || undefined,
 					_id: props.postData?._id || undefined
 				}
 			})

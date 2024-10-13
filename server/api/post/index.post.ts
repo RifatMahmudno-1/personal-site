@@ -3,7 +3,8 @@ type BodyType = {
 	title: string
 	section: string
 	content: string
-	private: boolean
+	private?: boolean
+	pinned?: boolean
 }
 
 const schema: AJVSchema<BodyType> = {
@@ -13,9 +14,10 @@ const schema: AJVSchema<BodyType> = {
 		title: { type: 'string', minLength: 1 },
 		section: { type: 'string', minLength: 1 },
 		content: { type: 'string', minLength: 1 },
-		private: { type: 'boolean' }
+		private: { type: 'boolean', nullable: true },
+		pinned: { type: 'boolean', nullable: true }
 	},
-	required: ['title', 'section', 'content', 'private'],
+	required: ['title', 'section', 'content'],
 	additionalProperties: false
 }
 
@@ -38,8 +40,13 @@ export default defineEventHandler(async ev => {
 						title: body.title,
 						section: body.section,
 						content: body.content,
-						private: body.private,
+						...(body.private ? { private: true } : {}),
+						...(body.pinned ? { pinned: true } : {}),
 						...(!body._id ? { createdAt: Date.now(), likes: 0 } : { modifiedAt: Date.now() })
+					},
+					$unset: {
+						...(!body.private ? { private: '' } : {}),
+						...(!body.pinned ? { pinned: '' } : {})
 					}
 				},
 				{ upsert: true, returnDocument: 'after' }

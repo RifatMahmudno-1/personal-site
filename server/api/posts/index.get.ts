@@ -33,7 +33,7 @@ export default defineEventHandler(async ev => {
 			.client!.db('Personal_Site')
 			.collection('Posts')
 			.find({ ...(query.section ? { section: query.section } : {}), ...(!authorized ? { private: { $ne: true } } : {}) })
-			.sort({ createdAt: -1 })
+			.sort({ ...(query.section ? { pinned: -1 } : {}), createdAt: -1 })
 			.skip((Number(query.page) - 1) * perPage)
 			.limit(perPage + 1)
 			.toArray()
