@@ -2,10 +2,3 @@ allowBuilds:
   '@parcel/watcher': true
   bcrypt: true
   esbuild: true
-minimumReleaseAgeExclude:
-  - linkify-it@5.0.2
-  - markdown-it@14.3.0
-onlyBuiltDependencies:
-  - '@parcel/watcher'
-  - bcrypt
-  - esbuild

@@ -8,8 +8,7 @@
 		"dev": "nuxt dev",
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
-		"postinstall": "nuxt prepare",
-		"update:packages": "ncu --target minor -u && pnpm install"
+		"postinstall": "nuxt prepare"
 	},
 	"dependencies": {
 		"@tailwindcss/typography": "^0.5.20",

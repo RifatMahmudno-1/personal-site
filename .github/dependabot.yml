@@ -1,0 +1,13 @@
+version: 2
+updates:
+  # Update pnpm packages weekly
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    open-pull-requests-limit: 10
+  # Update GitHub Actions monthly
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
